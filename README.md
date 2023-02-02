@@ -12,10 +12,10 @@ Leaderboard => view which user has submitted the most queries and responses.
 
 ## Getting Started
 
-Clone the repository `git clone https://github.com/prosenjeetshil/MyReads-Udacity.git`
-Please use `npm install` to install dependencies. use `npm start` to start the app. 
+Clone the repository `git clone https://github.com/prosenjeetshil/Employee-Polls-Udacity.git`
+Please use `npm install` to install dependencies. use `npm start` to start the app.
 The project can be viewed in the browser at [http://localhost:3000](http://localhost:3000)
-Please use `npm test` to launches the test runner in the interactive watch mode. 
+Please use `npm test` to launches the test runner in the interactive watch mode.
 
 ## Screenshots
 
