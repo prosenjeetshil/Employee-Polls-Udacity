@@ -1,0 +1,11 @@
+@import "bulma/sass/utilities/initial-variables";
+@import "bulma/sass/utilities/derived-variables";
+
+input:checked + label,
+.is-answer {
+  background-color: $warning;
+}
+
+.box.is-fullwidth {
+  width: 100%;
+}
