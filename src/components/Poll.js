@@ -11,7 +11,7 @@ import {
   Form,
   Button,
   Statistic,
-  Tag
+  Tag,
 } from "antd";
 
 const { Text } = Typography;
@@ -63,77 +63,85 @@ const Poll = (props) => {
 
   return exists ? (
     <div className="columns">
-    <div className="column is-half is-one-quarter-fullhd">
-      <Card>
-        <Card.Meta
-          avatar={<Avatar src={avatarURL} alt={name} />}
-          title={<Text strong>{name} asks</Text>}
-        />
-        <h3 className="my-0 mb-5 has-text-center">Would you rather...</h3>
-        <Form onSubmit={handleVote}>
-          <FormItem>
-            <RadioGroup
-              value={answer}
-              onChange={handleOptionChange}
-              disabled={completed}
-            >
-              <Radio value={OPTION_ONE}>
-                {optionOne}
-                {completed && (
-                  <div className="columns mt-1 is-mobile is-justify-content-space-between">
-                    <div className="column">
-                      <Statistic title="Votes" value={optionOneVotes} />
-                    </div>
-                    <div className="column is-narrow">
-                      <Tag color={optionOneVotes >= optionTwoVotes ? "green" : "red"}>
-                        {optionOnePercent}%
-                      </Tag>
-                    </div>
-                  </div>
-                )}
-              </Radio>
-            </RadioGroup>
-          </FormItem>
-
-          <FormItem>
-            <RadioGroup
-              value={answer}
-              onChange={handleOptionChange}
-              disabled={completed}
-            >
-              <Radio value={OPTION_TWO}>
-                {optionTwo}
-                {completed && (
-                  <div className="columns mt-1 is-mobile is-justify-content-space-between">
-                    <div className="column">
-                      <Statistic title="Votes" value={optionTwoVotes} />
-                    </div>
-                    <div className="column is-narrow">
-                      <Tag color={optionOneVotes <= optionTwoVotes ? "green" : "red"}>
-                        {optionTwoPercent}%
-                      </Tag>
-                    </div>
-                  </div>
-                )}
-              </Radio>
-            </RadioGroup>
-          </FormItem>
-          {!completed && (
+      <div className="column is-half is-one-quarter-fullhd">
+        <Card>
+          <Card.Meta
+            avatar={<Avatar src={avatarURL} alt={name} />}
+            title={<Text strong>{name} asks</Text>}
+          />
+          <h3 className="my-0 mb-5 has-text-center">Would you rather...</h3>
+          <Form onSubmit={handleVote}>
             <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                disabled={answer === ""}
-                block
+              <RadioGroup
+                value={answer}
+                onChange={handleOptionChange}
+                disabled={completed}
               >
-                Vote
-              </Button>
+                <Radio value={OPTION_ONE}>
+                  {optionOne}
+                  {completed && (
+                    <div className="columns mt-1 is-mobile is-justify-content-space-between">
+                      <div className="column">
+                        <Statistic title="Votes" value={optionOneVotes} />
+                      </div>
+                      <div className="column is-narrow">
+                        <Tag
+                          color={
+                            optionOneVotes >= optionTwoVotes ? "green" : "red"
+                          }
+                        >
+                          {optionOnePercent}%
+                        </Tag>
+                      </div>
+                    </div>
+                  )}
+                </Radio>
+              </RadioGroup>
             </FormItem>
-          )}
-        </Form>
-      </Card>
+
+            <FormItem>
+              <RadioGroup
+                value={answer}
+                onChange={handleOptionChange}
+                disabled={completed}
+              >
+                <Radio value={OPTION_TWO}>
+                  {optionTwo}
+                  {completed && (
+                    <div className="columns mt-1 is-mobile is-justify-content-space-between">
+                      <div className="column">
+                        <Statistic title="Votes" value={optionTwoVotes} />
+                      </div>
+                      <div className="column is-narrow">
+                        <Tag
+                          color={
+                            optionOneVotes <= optionTwoVotes ? "green" : "red"
+                          }
+                        >
+                          {optionTwoPercent}%
+                        </Tag>
+                      </div>
+                    </div>
+                  )}
+                </Radio>
+              </RadioGroup>
+            </FormItem>
+            {!completed && (
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  disabled={answer === ""}
+                  onClick={handleVote}
+                >
+                  Vote
+                </Button>
+              </FormItem>
+            )}
+          </Form>
+        </Card>
+      </div>
     </div>
-  </div>
   ) : (
     <NotFound />
   );
