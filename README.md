@@ -2,7 +2,7 @@
 
 ## About Employee Polls
 
-Employee Polls is a tool for generating and participating in pools within a group. Each polls offers two choices: "Option A or Option B?"
+Employee Polls is a tool for generating and participating in polls within a group. Each polls offers two choices: "Option A or Option B?"
 
 1. Log in => select a user from the list to log in
 2. Dashboard => switch between completed, all and pending polls
