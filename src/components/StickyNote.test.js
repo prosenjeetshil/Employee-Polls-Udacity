@@ -33,21 +33,11 @@ describe("StickyNote component", () => {
   });
 
   it("renders the name of the author", () => {
-    expect(
-      wrapper
-        .find("Text")
-        .at(0)
-        .prop("children")
-    ).toBe(props.name);
+    expect(wrapper.find("Text").at(0).prop("children")).toBe(props.name);
   });
 
   it("renders the formatted timestamp", () => {
-    expect(
-      wrapper
-        .find("Text")
-        .at(1)
-        .prop("children")
-    ).toBe("Oct 15, 2021");
+    expect(wrapper.find("Text").at(1).prop("children")).toBe("Oct 15, 2021");
   });
 
   it("renders the correct URL in the Link component", () => {

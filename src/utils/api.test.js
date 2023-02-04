@@ -1,35 +1,42 @@
-import { getInitialData, saveQuestion, saveQuestionAnswer } from "./api";
+// import React from "react";
+// import { render, fireEvent } from "@testing-library/react";
+import { fetchData, saveQuestion, saveQuestionAnswer } from "./data";
 
-describe("getInitialData", () => {
-  it("will load startup data", async () => {
-    const { users, questions } = await getInitialData();
-    expect(users).toBeDefined();
-    expect(questions).toBeDefined();
-  });
-});
-
-describe("saveQuestion", () => {
-  it("will save the poll question to the database", async () => {
-    const author = "author";
-    const optionOneText = "option one";
-    const optionTwoText = "option two";
-    const question = await saveQuestion({
-      author,
-      optionOneText,
-      optionTwoText,
+describe("Data functions", () => {
+  it("fetchData returns data", async () => {
+    const data = await fetchData();
+    expect(data).toEqual({
+      users: expect.any(Object),
+      questions: expect.any(Object),
     });
-
-    expect(question).toBeDefined();
   });
-});
 
-describe("saveQuestionAnswer", () => {
-  it("will save a poll answer for a particular question", async () => {
-    const authedUser = "mtsamis";
-    const qid = "8xf0y6ziyjabvozdd253nd";
-    const answer = "optionTwo";
-    const saved = await saveQuestionAnswer(authedUser, qid, answer);
+  it("saveQuestion saves a question", async () => {
+    const question = {
+      optionOneText: "Option one",
+      optionTwoText: "Option two",
+      author: "User 1",
+    };
 
-    expect(saved).toBe(true);
+    const savedQuestion = await saveQuestion(question);
+    expect(savedQuestion).toEqual({
+      ...question,
+      id: expect.any(String),
+      timestamp: expect.any(Number),
+    });
+  });
+
+  it("saveQuestionAnswer saves a question answer", async () => {
+    const authedUser = "User 1";
+    const qid = "abc123";
+    const answer = "optionOne";
+
+    const savedAnswer = await saveQuestionAnswer(authedUser, qid, answer);
+    expect(savedAnswer).toEqual({
+      authedUser,
+      qid,
+      answer,
+      timestamp: expect.any(Number),
+    });
   });
 });
