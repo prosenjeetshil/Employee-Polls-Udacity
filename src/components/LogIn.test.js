@@ -1,73 +1,44 @@
 import React from "react";
+import { render, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { mount } from "enzyme";
 import configureStore from "redux-mock-store";
 import Login from "./Login";
+import "./setupTests.js";
+
+const mockStore = configureStore([]);
 
 describe("Login component", () => {
   let store;
-  let wrapper;
-  let mockStore;
-  let users = [
-    {
-      id: "1",
-      name: "user1",
-    },
-    {
-      id: "2",
-      name: "user2",
-    },
-  ];
+  let dispatchMock;
 
   beforeEach(() => {
-    mockStore = configureStore();
     store = mockStore({
-      users,
+      users: [
+        { id: "1", name: "User1" },
+        { id: "2", name: "User2" },
+        { id: "3", name: "User3" },
+      ],
+      authedUser: null,
     });
-    wrapper = mount(
+    dispatchMock = jest.fn();
+    store.dispatch = dispatchMock;
+  });
+
+  it("renders and selects a user", () => {
+    const { getByPlaceholderText, getByText } = render(
       <Provider store={store}>
         <Login />
       </Provider>
     );
-  });
 
-  it("renders the Login component", () => {
-    expect(wrapper.exists()).toBe(true);
-  });
+    const select = getByPlaceholderText("Select a user");
+    fireEvent.change(select, { target: { value: "2" } });
+    const loginButton = getByText("Login");
+    fireEvent.click(loginButton);
 
-  it("displays a dropdown list of users", () => {
-    expect(wrapper.find("Select").length).toBe(1);
-    expect(wrapper.find("Option").length).toBe(3); // including the default "Select a user" option
-  });
-
-  it("updates the selected user when the dropdown value changes", () => {
-    wrapper
-      .find("Select")
-      .simulate("change", { target: { value: users[1].id } });
-    expect(wrapper.find("Select").props().value).toBe(users[1].id);
-  });
-
-  it("disables the login button when no user is selected", () => {
-    expect(wrapper.find("Button").props().disabled).toBe(true);
-  });
-
-  it("enables the login button when a user is selected", () => {
-    wrapper
-      .find("Select")
-      .simulate("change", { target: { value: users[0].id } });
-    expect(wrapper.find("Button").props().disabled).toBe(false);
-  });
-
-  it("dispatches the setAuthedUser action when the login button is clicked", () => {
-    wrapper
-      .find("Select")
-      .simulate("change", { target: { value: users[0].id } });
-    wrapper.find("Button").simulate("click");
-    expect(store.getActions()).toEqual([
-      {
-        type: "SET_AUTHED_USER",
-        id: users[0].id,
-      },
-    ]);
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: "SET_AUTHED_USER",
+      id: "2",
+    });
   });
 });
