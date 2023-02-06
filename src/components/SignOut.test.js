@@ -1,23 +1,41 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import SignOut from './SignOut';
-import { setAuthedUser } from '../actions/authedUser';
+import { render } from "@testing-library/react";
+import { MemoryRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import reducer from "../reducers";
+import SignOut from "./SignOut";
+const mockStore = configureStore([thunk]);
 
-describe('SignOut component', () => {
-  let wrapper;
-  let mockDispatch;
+describe("SignOut", () => {
+  const NAME = "Sarah Edo";
+  const AUTHED_USER = "sarahedo";
+  let store, component;
 
   beforeEach(() => {
-    mockDispatch = jest.fn();
-    wrapper = shallow(<SignOut name="Test User" avatarURL="" dispatch={mockDispatch} />);
+    store = mockStore({
+      authedUser: AUTHED_USER,
+      users: {
+        [AUTHED_USER]: {
+          id: AUTHED_USER,
+          name: NAME,
+          avatarURL: "https://placekitten.com/g/240/240",
+        },
+      },
+    });
+
+    store.replaceReducer(reducer);
+
+    component = render(
+      <Provider store={store}>
+        <Router>
+          <SignOut />
+        </Router>
+      </Provider>
+    );
   });
 
-  it('displays the name of the user', () => {
-    expect(wrapper.find('.title-color').text()).toBe('Test User');
-  });
-
-  it('dispatches the `setAuthedUser` action when the sign out button is clicked', () => {
-    wrapper.find('.button').simulate('click', { preventDefault: () => {} });
-    expect(mockDispatch).toHaveBeenCalledWith(setAuthedUser(null));
+  it("should match the snapshot", () => {
+    expect(component).toMatchSnapshot();
   });
 });

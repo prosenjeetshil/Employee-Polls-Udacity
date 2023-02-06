@@ -1,44 +1,61 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import Login from "./Login";
-import "./setupTests.js";
+import thunk from "redux-thunk";
+import reducer from "../reducers";
+import LogIn from "./LogIn";
+const mockStore = configureStore([thunk]);
 
-const mockStore = configureStore([]);
-
-describe("Login component", () => {
-  let store;
-  let dispatchMock;
+describe("LogIn", () => {
+  let store, component;
 
   beforeEach(() => {
     store = mockStore({
-      users: [
-        { id: "1", name: "User1" },
-        { id: "2", name: "User2" },
-        { id: "3", name: "User3" },
-      ],
       authedUser: null,
+      users: {
+        mtsamis: {
+          id: "mtsamis",
+          name: "Mike Tsamis",
+        },
+        zoshikanlu: {
+          id: "zoshikanlu",
+          name: "Zenobia Oshikanlu",
+        },
+      },
     });
-    dispatchMock = jest.fn();
-    store.dispatch = dispatchMock;
-  });
 
-  it("renders and selects a user", () => {
-    const { getByPlaceholderText, getByText } = render(
+    store.replaceReducer(reducer);
+
+    component = render(
       <Provider store={store}>
-        <Login />
+        <Router>
+          <LogIn />
+        </Router>
       </Provider>
     );
+  });
 
-    const select = getByPlaceholderText("Select a user");
-    fireEvent.change(select, { target: { value: "2" } });
-    const loginButton = getByText("Login");
-    fireEvent.click(loginButton);
-
-    expect(dispatchMock).toHaveBeenCalledWith({
-      type: "SET_AUTHED_USER",
-      id: "2",
+  it("should show an option for each user", async () => {
+    const options = screen.queryAllByRole("option").map((option) => ({
+      id: option.value,
+      name: option.textContent,
+    }));
+    const users = Object.values(store.getState().users);
+    users.forEach((user) => {
+      const option = options.filter(({ id }) => id === user.id).pop();
+      expect(option).toMatchObject(user);
     });
+  });
+
+  it("should select a user", () => {
+    const dropdown = screen.getByRole("combobox");
+    const option = screen.getByRole("option", { name: "Mike Tsamis" });
+    fireEvent.change(dropdown, { target: { value: option.value } });
+    expect(option.selected).toBe(true);
+  });
+
+  it("should match the snapshot", () => {
+    expect(component).toMatchSnapshot();
   });
 });

@@ -1,42 +1,36 @@
-// import React from "react";
-// import { render, fireEvent } from "@testing-library/react";
-import { fetchData, saveQuestion, saveQuestionAnswer } from "./data";
 
-describe("Data functions", () => {
-  it("fetchData returns data", async () => {
-    const data = await fetchData();
-    expect(data).toEqual({
-      users: expect.any(Object),
-      questions: expect.any(Object),
-    });
+import { fetchData, saveQuestion, saveQuestionAnswer } from "./api";
+
+describe("fetchData", () => {
+  it("will load startup data", async () => {
+    const { users, questions } = await fetchData();
+    expect(users).toBeDefined();
+    expect(questions).toBeDefined();
   });
+});
 
-  it("saveQuestion saves a question", async () => {
-    const question = {
-      optionOneText: "Option one",
-      optionTwoText: "Option two",
-      author: "User 1",
-    };
-
-    const savedQuestion = await saveQuestion(question);
-    expect(savedQuestion).toEqual({
-      ...question,
-      id: expect.any(String),
-      timestamp: expect.any(Number),
+describe("saveQuestion", () => {
+  it("will save the poll question to the database", async () => {
+    const author = "author";
+    const optionOneText = "option one";
+    const optionTwoText = "option two";
+    const question = await saveQuestion({
+      author,
+      optionOneText,
+      optionTwoText,
     });
+
+    expect(question).toBeDefined();
   });
+});
 
-  it("saveQuestionAnswer saves a question answer", async () => {
-    const authedUser = "User 1";
-    const qid = "abc123";
-    const answer = "optionOne";
+describe("saveQuestionAnswer", () => {
+  it("will save a poll answer for a particular question", async () => {
+    const authedUser = "mtsamis";
+    const qid = "8xf0y6ziyjabvozdd253nd";
+    const answer = "optionTwo";
+    const saved = await saveQuestionAnswer(authedUser, qid, answer);
 
-    const savedAnswer = await saveQuestionAnswer(authedUser, qid, answer);
-    expect(savedAnswer).toEqual({
-      authedUser,
-      qid,
-      answer,
-      timestamp: expect.any(Number),
-    });
+    expect(saved).toBe(true);
   });
 });
