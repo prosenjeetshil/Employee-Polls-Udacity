@@ -9,32 +9,22 @@ Object {
         class="columns is-mobile"
       >
         <div
-          class="column is-narrow"
-        >
-          <figure>
-            <img
-              alt="Sarah Edo"
-              src="https://placekitten.com/g/240/240"
-            />
-          </figure>
-        </div>
-        <div
           class="column"
         >
           <p
-            class="title is-6"
+            class="title-color is-6"
           >
             Sarah Edo
           </p>
-          <p
-            class="subtitle is-7"
+        </div>
+        <div
+          class="column2"
+        >
+          <button
+            class="button is-normal is-light is-rounded is-responsive"
           >
-            <button
-              class="button is-small"
-            >
-              sign out
-            </button>
-          </p>
+            Sign Out
+          </button>
         </div>
       </div>
     </div>
@@ -44,32 +34,22 @@ Object {
       class="columns is-mobile"
     >
       <div
-        class="column is-narrow"
-      >
-        <figure>
-          <img
-            alt="Sarah Edo"
-            src="https://placekitten.com/g/240/240"
-          />
-        </figure>
-      </div>
-      <div
         class="column"
       >
         <p
-          class="title is-6"
+          class="title-color is-6"
         >
           Sarah Edo
         </p>
-        <p
-          class="subtitle is-7"
+      </div>
+      <div
+        class="column2"
+      >
+        <button
+          class="button is-normal is-light is-rounded is-responsive"
         >
-          <button
-            class="button is-small"
-          >
-            sign out
-          </button>
-        </p>
+          Sign Out
+        </button>
       </div>
     </div>
   </div>,
