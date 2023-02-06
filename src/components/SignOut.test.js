@@ -19,7 +19,7 @@ describe("SignOut", () => {
         [AUTHED_USER]: {
           id: AUTHED_USER,
           name: NAME,
-          avatarURL: "https://placekitten.com/g/240/240",
+          avatarURL: "https://cdn-icons-png.flaticon.com/256/4825/4825112.png",
         },
       },
     });
