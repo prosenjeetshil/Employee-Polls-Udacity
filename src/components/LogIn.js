@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { connect } from "react-redux";
 import { setAuthedUser } from "../actions/authedUser";
-import { Select, Form, Button } from "antd";
-import { LockOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
 
 const Login = ({ users, dispatch }) => {
   const [selectedUser, setSelectedUser] = useState("");
@@ -14,58 +12,53 @@ const Login = ({ users, dispatch }) => {
     dispatch(setAuthedUser(selectedUser));
   };
 
-  const handleSelectUser = (value) => {
+  const handleSelectUser = ({ target }) => {
     const id =
-      value !== ""
-        ? users.filter(({ id }) => id === value)[0].id
+      target.value !== ""
+        ? users.filter(({ id }) => id === target.value)[0].id
         : "";
     setSelectedUser(id);
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "40%" }}>
-        <h2 style={{ fontSize: "2rem", marginBottom: "2rem" }}>Login</h2>
+    <div className="has-text-centered">
+      <div className="columns is-centered">
+        <div className="column is-two-fifths">
+          <h2 className="is-size-2 my-5">Login</h2>
 
-        <LockOutlined
-          style={{ fontSize: "5rem", marginBottom: "2rem" }}
-        />
+          <p>
+            <FontAwesomeIcon
+              className="my-5"
+              icon={solid("lock")}
+              size="10x"
+            />
+          </p>
 
-        <Form style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "30%" }}>
-          <Form.Item style={{ marginBottom: "1rem" }}>
-            <Select
-              placeholder="Select a user"
-              onChange={handleSelectUser}
-              value={selectedUser}
-              style={{ width: "100%", padding: "0.5rem", fontSize: "1rem", borderRadius: "0.25rem" }}
-            >
-              <Option value="">Select a user</Option>
-              {users.map(({ id, name }) => (
-                <Option key={id} value={id}>
-                  {name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          {users.length !== 0 && selectedUser !== "" && (
-            <Form.Item>
-              <Button
-                type="primary"
-                style={{
-                  padding: "0.75rem 1.5rem",
-                  fontSize: "1rem",
-                  backgroundColor: "green",
-                  color: "white",
-                  borderRadius: "0.25rem",
-                  marginTop: "1rem",
-                }}
-                onClick={handleLogin}
+          <form className="my-5">
+            <div className="select">
+              <select
+                name="user"
+                id="login-as"
+                onChange={handleSelectUser}
+                defaultValue={selectedUser}
+                role="combobox"
               >
+                <option value="">Select a user</option>
+                {users.map(({ id, name }) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {users.length !== 0 && selectedUser !== "" && (
+              <button className="button is-primary" onClick={handleLogin}>
                 Login
-              </Button>
-            </Form.Item>
-          )}
-        </Form>
+              </button>
+            )}
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -77,5 +70,4 @@ const mapStateToProps = ({ users, authedUser }) => {
   };
 };
 
-export default connect(
-mapStateToProps)(Login);
+export default connect(mapStateToProps)(Login);
